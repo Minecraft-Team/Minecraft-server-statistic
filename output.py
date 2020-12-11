@@ -1,15 +1,17 @@
-# name_list - массив, содержащий строки, вида:
-#       [nickname, time_total, sum_total] - никнейм, количество проведённого времени и итоговая сумма
-
 import requests
 from xml.etree.ElementTree import fromstring, ElementTree
 
 
 def beautiful_output(name_list, days_count):
-    output_line = "Statistic for the last " + str(days_count) + " days:\n\n"
-    max_nick_length = len("Nickname")
-    max_time_length = len("Time Total")
-    max_sum_usd_length = len("Sum Total USD")
+    """
+        name_list - array, that contains dictionaries:
+        {nickname : (time_total, sum_total) - nickname, time spent on server and total sum
+    """
+
+    output_line = f'Statistic for the last {days_count} days:\n\n'
+    max_nick_length = len('Nickname')
+    max_time_length = len('Time Total')
+    max_sum_usd_length = len('Sum Total USD')
 
     currency = get_currency()
 
@@ -18,10 +20,10 @@ def beautiful_output(name_list, days_count):
         max_time_length = max(max_time_length, len(str(name_list[person][0])))
         max_sum_usd_length = max(max_sum_usd_length, len(str(name_list[person][1])))
 
-    output_line += "     Nickname" + " " * (max_nick_length - len("Nickname")) + " | " + \
-                   "Time Total" + " " * (max_time_length - len("Time Total")) + " | " + \
-                   "Sum Total USD" + " " * (max_sum_usd_length - len("Sum Total USD")) + " | " + \
-                   "Sum Total USSR\n"
+    output_line += (f"     Nickname{' ' * (max_nick_length - len('Nickname'))} | "
+                    f"Time Total{' ' * (max_time_length - len('Time Total'))} | "
+                    f"Sum Total USD{' ' * (max_sum_usd_length - len('Sum Total USD'))} | "
+                    f"Sum Total USSR\n")
 
     for person in name_list:
         cur_nick_length = len(person)
@@ -33,10 +35,10 @@ def beautiful_output(name_list, days_count):
         diff_sum_usd = max_sum_usd_length - cur_sum_usd_length
 
         sum_ussr = name_list[person][1] * currency
-        output_line += "   - " + str(person) + " " * diff_nick + " | " + \
-                       str(name_list[person][0]) + " " * diff_time + " | " + \
-                       str(name_list[person][1]) + " $" + " " * (diff_sum_usd - 2) + " | " + \
-                       str(sum_ussr) + ' \u20BD' + "\n"
+        output_line += (f"   - {person}{' ' * diff_nick} | "
+                        f"{name_list[person][0]}{' ' * diff_time} | "
+                        f"{name_list[person][1]}\u0024{' ' * (diff_sum_usd - 1)} | "
+                        f"{round(sum_ussr, 2)}\u20BD\n")
 
     return output_line
 
@@ -53,7 +55,7 @@ def get_currency():
     for leaf in tree.getroot():
         if leaf.attrib['ID'] == 'R01235':
             for i in leaf:
-                if i.tag == "Value":
+                if i.tag == 'Value':
                     currency_usd = float(i.text.replace(',', '.'))
 
     return currency_usd
