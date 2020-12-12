@@ -1,5 +1,6 @@
-import requests
 from xml.etree.ElementTree import fromstring, ElementTree
+
+import requests
 
 
 def beautiful_output(name_list, days_count):

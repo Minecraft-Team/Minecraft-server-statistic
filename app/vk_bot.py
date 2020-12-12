@@ -1,30 +1,12 @@
 import os
 import datetime
-import vk_api as vk
 import random
+
+import vk_api as vk
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-
-class Constants:
-    # vk bot
-    VK_BOT_ACCESS_TOKEN = os.getenv('VK_BOT_ACCESS_TOKEN')
-    CHAT_ID = os.getenv('VK_BOT_CHAT_ID')
-
-    # vk tags
-    SERVER_TAG = '#server'
-    STATISTICS_TAG = '#statistics'
-
-    # pastebin service
-    PASTEBIN_DEV_KEY = os.getenv('PASTEBIN_DEV_KEY')
-
-    # text to image service
-    BACKGROUND_COLOR = (0, 0, 0)
-    TEXT_COLOR = (255, 255, 0)
-    TEXT_PADDING = 50
-    TEXT_FONT = 'fonts/consola.ttf'   # windows monospace font
-    # TEXT_FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'   # linux monospace font
-    FONT_SIZE = 30
+from app.constants import Constants
 
 
 class PastebinService:
@@ -103,15 +85,3 @@ class VkBotServerStatistics:
                                            f'{Constants.STATISTICS_TAG}'),
                                   random_id=random.randint(0, 1 << 31),
                                   attachment=f'photo{vk_image_info["owner_id"]}_{vk_image_info["id"]}')
-
-
-def main():
-    with open('test.txt') as f:
-        text = f.read()
-
-    vk_bot = VkBotServerStatistics()
-    vk_bot.send_statistics(text)
-
-
-if __name__ == '__main__':
-    main()
