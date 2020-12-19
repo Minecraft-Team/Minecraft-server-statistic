@@ -58,7 +58,7 @@ class VkBotServerStatistics:
     def __init__(self):
         vk_session = vk.VkApi(token=Constants.VK_BOT_ACCESS_TOKEN)
         self.vk_api = vk_session.get_api()
-        self.target_chat_id = Constants.CHAT_ID
+        self.target_chat_id = Constants.VK_CHAT_ID
 
     def send_statistics(self, statistics):
         pastebin_service = PastebinService()

@@ -3,6 +3,7 @@ import os
 
 class Constants:
     LOGS_DIR = 'logs'
+    UNPACKED_LOGS_DIR = 'unpacked_logs'
     DATA = '.data'
 
     NORMAL_PLAYERS = []
@@ -12,7 +13,7 @@ class Constants:
 
     # VK bot
     VK_BOT_ACCESS_TOKEN = os.getenv('VK_BOT_ACCESS_TOKEN')
-    CHAT_ID = os.getenv('VK_BOT_CHAT_ID')
+    VK_CHAT_ID = os.getenv('VK_BOT_CHAT_ID')
 
     # VK tags
     SERVER_TAG = '#server'
@@ -27,3 +28,8 @@ class Constants:
     TEXT_PADDING = 50
     TEXT_FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf'   # linux monospace font
     FONT_SIZE = 30
+
+    # Discord bot access token and id of the target channel
+    DISCORD_BOT_ACCESS_TOKEN = os.getenv('DISCORD_BOT_ACCESS_TOKEN')
+    DISCORD_CHANNEL_ID = int(os.getenv('DISCORD_CHANNEL_ID'))
+
