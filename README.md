@@ -1,1 +1,1 @@
-# Minecraft-server-statistic
+# Minecraft-server-statistics
