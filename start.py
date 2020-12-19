@@ -5,7 +5,7 @@ import logging
 from datetime import datetime
 
 from app.constants import Constants
-from app.core import Statistic
+from app.core import Statistics
 from app.formatting import beautiful_output
 from app.vk_bot import VkBotServerStatistics
 
@@ -13,7 +13,7 @@ from app.vk_bot import VkBotServerStatistics
 def create_parser():
     parser = argparse.ArgumentParser()
     _ = parser.add_argument
-    date_validator = lambda date: datetime.strptime(date, '%Y.%m.%d')
+    date_validator = lambda date: datetime.strptime(date, Constants.DATE_FORMAT)
 
     _('--begin', type=date_validator, default=None, help='Begin statistic date')
     _('--end', type=date_validator, default=None, help='End statistic date')
@@ -34,9 +34,6 @@ def check_files():
     if not os.path.isdir(Constants.LOGS_DIR):
         raise ValueError("Incorrect path to logs directory")
 
-    if not os.path.isdir(Constants.UNPACKED_LOGS_DIR):
-        raise ValueError("Incorrect path to unpacked logs directory")
-
     if not os.path.isfile(Constants.DATA):
         open(Constants.DATA, "w").close()
 
@@ -50,7 +47,7 @@ def main():
         check_args(args)
         check_files()
 
-        statistic = Statistic()
+        statistic = Statistics()
         dates = statistic.upload_new_files()
 
         if args.last:
@@ -62,8 +59,8 @@ def main():
         print(beautiful_output(stats, f'{begin_date} {end_date}'))
         # VkBotServerStatistics().send_statistics(beautiful_output(stats, f'{begin_date} {end_date}'))
 
-    except Exception as e:
-        logging.error(e)
+    except Exception:
+        logging.exception("Something was broken")
 
     return 0
 

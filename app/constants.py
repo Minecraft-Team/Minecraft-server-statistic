@@ -3,10 +3,12 @@ import os
 
 class Constants:
     LOGS_DIR = 'logs'
-    UNPACKED_LOGS_DIR = 'unpacked_logs'
     DATA = '.data'
 
     NORMAL_PLAYERS = []
+
+    DATE_FORMAT = '%Y-%m-%d'
+    DAY_FORMAT = '%H:%M:%S'
 
     # VK bot
     VK_BOT_ACCESS_TOKEN = os.getenv('VK_BOT_ACCESS_TOKEN')
