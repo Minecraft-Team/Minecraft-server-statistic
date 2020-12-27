@@ -8,6 +8,7 @@ from app.constants import Constants
 from app.core import Statistics
 from app.formatting import beautiful_output
 from app.vk_bot import VkBotServerStatistics
+from app.discord_server_info_bot import DiscordServerInfoBot
 
 
 def create_parser():
@@ -18,11 +19,15 @@ def create_parser():
     _('--begin', type=date_validator, default=None, help='Begin statistic date')
     _('--end', type=date_validator, default=None, help='End statistic date')
     _('--last', action='store_true', help='Calculate statistic for not calculated period')
+    _('--server-event', type=str, default=None, help='Server event type')
 
     return parser
 
 
 def check_args(args):
+    if args.server_event not in ('launch', 'shutdown'):
+        raise ValueError("'server-event' has incorrect value")
+
     if args.last == False:
         if None in (args.begin, args.end):
             raise ValueError("'begin' or 'end' argument is empty")
@@ -45,18 +50,20 @@ def main():
         parser = create_parser()
         args = parser.parse_args()
         check_args(args)
-        check_files()
+        DiscordServerInfoBot().on_server_event(args.server_event)
 
-        statistic = Statistics()
-        dates = statistic.upload_new_files()
-
-        if args.last:
-            begin_date, end_date = min(dates), max(dates)
-        else:
-            begin_date, end_date = args.begin, args.end
-
-        stats = statistic.calculate_by_period(begin_date, end_date)
-        print(beautiful_output(stats, f'{begin_date} {end_date}'))
+        # check_files()
+        #
+        # statistic = Statistics()
+        # dates = statistic.upload_new_files()
+        #
+        # if args.last:
+        #     begin_date, end_date = min(dates), max(dates)
+        # else:
+        #     begin_date, end_date = args.begin, args.end
+        #
+        # stats = statistic.calculate_by_period(begin_date, end_date)
+        # print(beautiful_output(stats, f'{begin_date} {end_date}'))
         # VkBotServerStatistics().send_statistics(beautiful_output(stats, f'{begin_date} {end_date}'))
 
     except Exception:

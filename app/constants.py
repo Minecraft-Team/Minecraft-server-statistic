@@ -31,5 +31,5 @@ class Constants:
 
     # Discord bot access token and id of the target channel
     DISCORD_BOT_ACCESS_TOKEN = os.getenv('DISCORD_BOT_ACCESS_TOKEN')
-    DISCORD_CHANNEL_ID = int(os.getenv('DISCORD_CHANNEL_ID'))
+    DISCORD_CHANNEL_ID = int(os.getenv('DISCORD_CHANNEL_ID', 0))
 
